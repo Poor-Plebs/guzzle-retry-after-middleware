@@ -1,0 +1,54 @@
+{
+    "name": "poor-plebs/guzzle-retry-after-middleware",
+    "description": "A guzzle middleware to keep track of the Retry-After HTTP header and fail consecutive requests until this time has passed.",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "PoorPlebs\\GuzzleRetryAfterMiddleware\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Petr Levtonov",
+            "email": "petr@levtonov.com"
+        }
+    ],
+    "archive": {
+        "exclude": [
+            "/.composer.lock",
+            "/.editorconfig",
+            "/.git",
+            "/.gitattributes",
+            "/.github",
+            "/.gitignore",
+            "/.php-cs-fixer.dist.php",
+            "/cache",
+            "/CHANGELOG.md",
+            "/phpstan.neon.dist",
+            "/phpunit.xml.dist",
+            "/tests"
+        ]
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.13.0",
+        "phpstan/phpstan": "^1.9.0",
+        "phpunit/phpunit": "^9.5.26",
+        "roave/security-advisories": "dev-latest"
+    },
+    "require": {
+        "psr/log": "^3.0"
+    }
+}
