@@ -49,6 +49,10 @@
         "roave/security-advisories": "dev-latest"
     },
     "require": {
-        "psr/log": "^3.0"
+        "php": "^8.1.0",
+        "guzzlehttp/guzzle": "^7.5.0",
+        "nesbot/carbon": "^2.62.0",
+        "psr/log": "^3.0.0",
+        "psr/simple-cache": "^3.0.0"
     }
 }
