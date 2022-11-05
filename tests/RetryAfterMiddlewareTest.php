@@ -25,7 +25,9 @@ use Throwable;
 class RetryAfterMiddlewareTest extends TestCase
 {
     private const CACHE_KEY = 'test_cache_key';
+
     private const RETRY_AFTER_DATE = 'Wed, 21 Oct 2022 07:28:00 GMT';
+
     private const RETRY_AFTER_SECONDS = 2;
 
     protected function tearDown(): void
