@@ -16,6 +16,12 @@ The format is based on [Keep a Changelog][1], and this project adheres to
 
 ## [Unreleased]
 
+## [1.0.1] - 2022-11-05
+
+### Added
+
+- Added initial CI/CD setup.
+
 ## [1.0.0] - 2022-11-05
 
 ### Added
