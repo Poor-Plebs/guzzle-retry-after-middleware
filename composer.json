@@ -21,7 +21,6 @@
     ],
     "archive": {
         "exclude": [
-            "/.composer.lock",
             "/.editorconfig",
             "/.git",
             "/.gitattributes",
@@ -30,6 +29,7 @@
             "/.php-cs-fixer.dist.php",
             "/cache",
             "/CHANGELOG.md",
+            "/composer.lock",
             "/phpstan.neon.dist",
             "/phpunit.xml.dist",
             "/tests"
