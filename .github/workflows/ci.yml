@@ -23,7 +23,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          coverage: none
+          coverage: pcov
 
       - name: Checkout code
         uses: actions/checkout@v3
