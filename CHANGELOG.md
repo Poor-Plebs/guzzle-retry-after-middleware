@@ -16,6 +16,12 @@ The format is based on [Keep a Changelog][1], and this project adheres to
 
 ## [Unreleased]
 
+## [1.1.0] - 2022-11-05
+
+### Changed
+
+- Loosen up php and dependency version constraints to allow a broader usage of this package.
+
 ## [1.0.1] - 2022-11-05
 
 ### Added
@@ -31,6 +37,7 @@ The format is based on [Keep a Changelog][1], and this project adheres to
 [1]: https://keepachangelog.com/en/1.1.0/
 [2]: https://semver.org/spec/v2.0.0.html
 
-[Unreleased]: https://github.com/Poor-Plebs/guzzle-retry-after-middleware/compare/1.0.1...HEAD
-[1.0.0]: https://github.com/Poor-Plebs/guzzle-retry-after-middleware/releases/1.0.1
+[Unreleased]: https://github.com/Poor-Plebs/guzzle-retry-after-middleware/compare/1.1.0...HEAD
+[1.1.0]: https://github.com/Poor-Plebs/guzzle-retry-after-middleware/releases/1.1.0
+[1.0.1]: https://github.com/Poor-Plebs/guzzle-retry-after-middleware/releases/1.0.1
 [1.0.0]: https://github.com/Poor-Plebs/guzzle-retry-after-middleware/releases/1.0.0
