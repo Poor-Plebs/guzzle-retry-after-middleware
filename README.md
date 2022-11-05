@@ -1,5 +1,7 @@
 # poor-plebs/guzzle-retry-after-middleware
 
+[![CI](https://github.com/Poor-Plebs/guzzle-retry-after-middleware/actions/workflows/ci.yml/badge.svg)](https://github.com/Poor-Plebs/guzzle-retry-after-middleware/actions/workflows/ci.yml)
+
 **[What is it for?](#what-is-it-for)** |
 **[What are the requirements?](#what-are-the-requirements)** |
 **[How to install it?](#how-to-install-it)** |
