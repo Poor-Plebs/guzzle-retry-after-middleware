@@ -54,7 +54,7 @@ $handlerStack = HandlerStack::create();
 
 // Where to put this middleware in the middleware stack depends on the usecase.
 $handlerStack->unshift(
-    (new RetryAfterMiddleware($cache))(self::CACHE_KEY),
+    (new RetryAfterMiddleware($cache))('cache_key_to_use'),
     'retry_after',
 );
 
