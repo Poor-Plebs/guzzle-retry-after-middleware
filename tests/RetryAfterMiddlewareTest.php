@@ -215,7 +215,7 @@ class RetryAfterMiddlewareTest extends TestCase
         $this->assertSame('{"ok":true,"result":{}}', (string)$response->getBody());
     }
 
-    private function retryAfterDateDataProvider(): array
+    public function retryAfterDateDataProvider(): array
     {
         return [
             'success_trigger' => [
@@ -243,7 +243,7 @@ class RetryAfterMiddlewareTest extends TestCase
         ];
     }
 
-    private function retryAfterSecondsDataProvider(): array
+    public function retryAfterSecondsDataProvider(): array
     {
         return [
             'success_trigger' => [
