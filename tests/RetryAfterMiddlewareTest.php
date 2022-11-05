@@ -15,6 +15,7 @@ use Illuminate\Cache\ArrayStore;
 use Illuminate\Cache\Repository;
 use LogicException;
 use PHPUnit\Framework\TestCase;
+use PoorPlebs\GuzzleRetryAfterMiddleware\MissingRetryAfterCacheKeyException;
 use PoorPlebs\GuzzleRetryAfterMiddleware\RetryAfterException;
 use PoorPlebs\GuzzleRetryAfterMiddleware\RetryAfterMiddleware;
 use Throwable;
@@ -37,6 +38,34 @@ class RetryAfterMiddlewareTest extends TestCase
 
     /**
      * @test
+     * @covers \PoorPlebs\GuzzleRetryAfterMiddleware\RetryAfterMiddleware
+     * @covers \PoorPlebs\GuzzleRetryAfterMiddleware\MissingRetryAfterCacheKeyException
+     */
+    public function it_can_pass_the_cache_key_on_the_request(): void
+    {
+        $handlerStack = HandlerStack::create(new MockHandler([
+            new Response(200, [], '{"ok":true,"result":{}}'),
+        ]));
+        $handlerStack->unshift(
+            new RetryAfterMiddleware(new Repository(new ArrayStore())),
+            'retry_after',
+        );
+        $client = new Client([
+            'base_uri' => 'https://sometest.com/',
+            'handler' => $handlerStack,
+        ]);
+
+        $response = $client->postAsync(
+            'sendMessage',
+            [
+                RetryAfterMiddleware::REQUEST_OPTION => self::CACHE_KEY,
+            ],
+        )->wait();
+        $this->assertSame('{"ok":true,"result":{}}', (string)$response->getBody());
+    }
+
+    /**
+     * @test
      * @dataProvider retryAfterDateDataProvider
      * @covers \PoorPlebs\GuzzleRetryAfterMiddleware\RetryAfterMiddleware
      * @covers \PoorPlebs\GuzzleRetryAfterMiddleware\RetryAfterException
@@ -51,13 +80,14 @@ class RetryAfterMiddlewareTest extends TestCase
 
         $handlerStack = HandlerStack::create($mockHttpHandler);
         $handlerStack->unshift(
-            (new RetryAfterMiddleware($repository))(self::CACHE_KEY),
+            new RetryAfterMiddleware($repository),
             'retry_after',
         );
 
         $client = new Client([
             'base_uri' => 'https://sometest.com/',
             'handler' => $handlerStack,
+            RetryAfterMiddleware::REQUEST_OPTION => self::CACHE_KEY,
         ]);
 
         // Initial request that fails with a client rate limit exception.
@@ -141,13 +171,14 @@ class RetryAfterMiddlewareTest extends TestCase
 
         $handlerStack = HandlerStack::create($mockHttpHandler);
         $handlerStack->unshift(
-            (new RetryAfterMiddleware($repository))(self::CACHE_KEY),
+            new RetryAfterMiddleware($repository),
             'retry_after',
         );
 
         $client = new Client([
             'base_uri' => 'https://sometest.com/',
             'handler' => $handlerStack,
+            RetryAfterMiddleware::REQUEST_OPTION => self::CACHE_KEY,
         ]);
 
         // Initial request that fails with a client rate limit exception.
@@ -213,6 +244,63 @@ class RetryAfterMiddlewareTest extends TestCase
         $response = $client->postAsync('sendMessage')->wait();
 
         $this->assertSame('{"ok":true,"result":{}}', (string)$response->getBody());
+    }
+
+    /**
+     * @test
+     * @covers \PoorPlebs\GuzzleRetryAfterMiddleware\RetryAfterMiddleware
+     * @covers \PoorPlebs\GuzzleRetryAfterMiddleware\MissingRetryAfterCacheKeyException
+     */
+    public function it_throws_an_exception_when_cache_key_is_missing(): void
+    {
+        $this->expectException(MissingRetryAfterCacheKeyException::class);
+        $this->expectExceptionCode(0);
+        $this->expectExceptionMessage(
+            'Required qequest option ' . RetryAfterMiddleware::REQUEST_OPTION . ' has not been provided.'
+        );
+
+        $handlerStack = HandlerStack::create(new MockHandler([
+            new Response(200, [], '{"ok":true,"result":{}}'),
+        ]));
+        $handlerStack->unshift(
+            new RetryAfterMiddleware(new Repository(new ArrayStore())),
+            'retry_after',
+        );
+        $client = new Client([
+            'base_uri' => 'https://sometest.com/',
+            'handler' => $handlerStack,
+        ]);
+
+        $client->postAsync('sendMessage')->wait();
+    }
+
+    /**
+     * @test
+     * @covers \PoorPlebs\GuzzleRetryAfterMiddleware\RetryAfterMiddleware
+     * @covers \PoorPlebs\GuzzleRetryAfterMiddleware\MissingRetryAfterCacheKeyException
+     */
+    public function it_throws_an_exception_when_cache_key_is_not_a_string(): void
+    {
+        $this->expectException(MissingRetryAfterCacheKeyException::class);
+        $this->expectExceptionCode(0);
+        $this->expectExceptionMessage(
+            'Request option ' . RetryAfterMiddleware::REQUEST_OPTION . ' must be of type string, integer given.'
+        );
+
+        $handlerStack = HandlerStack::create(new MockHandler([
+            new Response(200, [], '{"ok":true,"result":{}}'),
+        ]));
+        $handlerStack->unshift(
+            new RetryAfterMiddleware(new Repository(new ArrayStore())),
+            'retry_after',
+        );
+        $client = new Client([
+            'base_uri' => 'https://sometest.com/',
+            'handler' => $handlerStack,
+            RetryAfterMiddleware::REQUEST_OPTION => 123,
+        ]);
+
+        $client->postAsync('sendMessage')->wait();
     }
 
     public function retryAfterDateDataProvider(): array

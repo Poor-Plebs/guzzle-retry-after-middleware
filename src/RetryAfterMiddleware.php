@@ -17,49 +17,65 @@ use function GuzzleHttp\Promise\rejection_for;
 
 class RetryAfterMiddleware
 {
-    private const HEADER = 'Retry-After';
+    public const HEADER = 'Retry-After';
+
+    public const REQUEST_OPTION = 'retry_after_cache_key';
 
     public function __construct(protected CacheInterface $cache)
     {
     }
 
-    public function __invoke(string $key): callable
+    public function __invoke(callable $handler): callable
     {
-        return function (callable $handler) use ($key) {
-            return function (RequestInterface $request, array $options = []) use ($handler, $key): PromiseInterface {
-                /** @var string|null $retryAfter */
-                $retryAfter = $this->cache->get($key);
-                if (is_string($retryAfter)) {
-                    $retryAfter = new CarbonImmutable($retryAfter);
+        return function (RequestInterface $request, array $options = []) use ($handler): PromiseInterface {
+            if (!isset($options[self::REQUEST_OPTION])) {
+                throw new MissingRetryAfterCacheKeyException(sprintf(
+                    'Required qequest option %s has not been provided.',
+                    self::REQUEST_OPTION,
+                ), $request);
+            }
 
-                    $now = new CarbonImmutable();
-                    if ($retryAfter->greaterThanOrEqualTo($now)) {
-                        return rejection_for(new RetryAfterException(
-                            $this->retryAfterMessage($retryAfter, $now),
-                            $request,
-                        ));
-                    }
+            $key = $options[self::REQUEST_OPTION];
+            if (!is_string($key)) {
+                throw new MissingRetryAfterCacheKeyException(sprintf(
+                    'Request option %s must be of type string, %s given.',
+                    self::REQUEST_OPTION,
+                    gettype($key),
+                ), $request);
+            }
+
+            /** @var string|null $retryAfter */
+            $retryAfter = $this->cache->get($key);
+            if (is_string($retryAfter)) {
+                $retryAfter = new CarbonImmutable($retryAfter);
+
+                $now = new CarbonImmutable();
+                if ($retryAfter->greaterThanOrEqualTo($now)) {
+                    return rejection_for(new RetryAfterException(
+                        $this->retryAfterMessage($retryAfter, $now),
+                        $request,
+                    ));
                 }
+            }
 
-                return $handler($request, $options)->then(
-                    function (ResponseInterface $response) use ($key): mixed {
-                        $this->checkHeader($response, $key);
+            return $handler($request, $options)->then(
+                function (ResponseInterface $response) use ($key): mixed {
+                    $this->checkHeader($response, $key);
 
-                        return $response;
-                    },
-                    function (Throwable $reason) use ($key): PromiseInterface {
-                        if ($reason instanceof BadResponseException) {
-                            $response = $reason->getResponse();
+                    return $response;
+                },
+                function (Throwable $reason) use ($key): PromiseInterface {
+                    if ($reason instanceof BadResponseException) {
+                        $response = $reason->getResponse();
 
-                            if ($response instanceof ResponseInterface) {
-                                $this->checkHeader($response, $key);
-                            }
+                        if ($response instanceof ResponseInterface) {
+                            $this->checkHeader($response, $key);
                         }
-
-                        return rejection_for($reason);
                     }
-                );
-            };
+
+                    return rejection_for($reason);
+                }
+            );
         };
     }
 
