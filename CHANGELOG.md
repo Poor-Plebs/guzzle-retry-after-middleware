@@ -16,6 +16,23 @@ The format is based on [Keep a Changelog][1], and this project adheres to
 
 ## [Unreleased]
 
+## [2.0.0] - 2022-11-05
+
+### Added
+
+- Added a matrix CI pipeline to test with php 8.0, 8.1 and 8.2, each with lowest
+  and highest package requirements.
+
+### Changed
+
+- Changed the way the cache key is provided to the middleware. Instead of once
+  on setup, the key is set on the request options either on client instantiation
+  or on per request basis.
+
+### Fixed
+
+- Pushed minimum version for carbon to support php 8.2 with lowest requirements.
+
 ## [1.1.1] - 2022-11-05
 
 ### Changed
@@ -44,7 +61,8 @@ The format is based on [Keep a Changelog][1], and this project adheres to
 [1]: https://keepachangelog.com/en/1.1.0/
 [2]: https://semver.org/spec/v2.0.0.html
 
-[Unreleased]: https://github.com/Poor-Plebs/guzzle-retry-after-middleware/compare/1.1.1...HEAD
+[Unreleased]: https://github.com/Poor-Plebs/guzzle-retry-after-middleware/compare/2.0.0...HEAD
+[2.0.0]: https://github.com/Poor-Plebs/guzzle-retry-after-middleware/releases/2.0.0
 [1.1.1]: https://github.com/Poor-Plebs/guzzle-retry-after-middleware/releases/1.1.1
 [1.1.0]: https://github.com/Poor-Plebs/guzzle-retry-after-middleware/releases/1.1.0
 [1.0.1]: https://github.com/Poor-Plebs/guzzle-retry-after-middleware/releases/1.0.1

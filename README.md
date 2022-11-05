@@ -56,13 +56,15 @@ $handlerStack = HandlerStack::create();
 
 // Where to put this middleware in the middleware stack depends on the usecase.
 $handlerStack->unshift(
-    (new RetryAfterMiddleware($cache))('cache_key_to_use'),
-    'retry_after',
+    new RetryAfterMiddleware($cache),
+    'retry_after', // Name of the middlewere for debugging purposes.
 );
 
 $client = new Client([
     'base_uri' => 'https://sometest.com/',
     'handler' => $handlerStack,
+    // Can be set/overwritten on per request basis as well.
+    RetryAfterMiddleware::REQUEST_OPTION => 'cache_key_to_use',
 ]);
 
 try {
