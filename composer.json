@@ -67,7 +67,8 @@
         ],
         "csf": "XDEBUG_MODE=off vendor/bin/php-cs-fixer fix",
         "static": "XDEBUG_MODE=off vendor/bin/phpstan --memory-limit=4G analyse",
-        "test": "XDEBUG_MODE=off vendor/bin/phpunit --order-by=defects --no-interaction --colors=never --testsuite=default",
-        "coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --order-by=defects --no-interaction --colors=never --coverage-html coverage --testsuite=default"
+        "test": "XDEBUG_MODE=off vendor/bin/phpunit --no-coverage",
+        "coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-html=coverage",
+        "coverage-clover": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-clover=clover.xml"
     }
 }
