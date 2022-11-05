@@ -9,8 +9,6 @@
 A guzzle middleware to keep track of the Retry-After HTTP header and fail
 consecutive requests until this time has passed.
 
----
-
 ## What is it for?
 
 Some HTTP servers may respond with a `Retry-After` [header][1], hinting the
@@ -29,21 +27,15 @@ can keep track of the retry after header's back off period so that requests
 during that period will fail with a dedicated exception before they are event
 sent out.
 
----
-
 ## What are the requirements?
 
 - PHP 8.0 or above
-
----
 
 ## How to install it?
 
 ```bash
 composer require poor-plebs/guzzle-retry-after-middleware
 ```
-
----
 
 ## How to use it?
 
@@ -77,8 +69,6 @@ try {
     // Do something when the library blocks requests.
 }
 ```
-
----
 
 ## How to contribute?
 
