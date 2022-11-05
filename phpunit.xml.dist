@@ -5,12 +5,14 @@
          cacheResultFile="cache/.phpunit.cache/test-results"
          executionOrder="depends,defects"
          forceCoversAnnotation="true"
+         noInteraction="true"
          beStrictAboutCoversAnnotation="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTodoAnnotatedTests="true"
          convertDeprecationsToExceptions="true"
          failOnRisky="true"
          failOnWarning="true"
+         defaultTestSuite="default"
          verbose="true">
     <testsuites>
         <testsuite name="default">

@@ -13,6 +13,7 @@ return (new Config())
         ->in(__DIR__)
         ->exclude([
             'cache',
+            'coverage',
             'vendor',
         ])
         ->name('*.php')
