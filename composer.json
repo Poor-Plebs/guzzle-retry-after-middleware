@@ -72,9 +72,9 @@
             "composer coverage"
         ],
         "lint": "XDEBUG_MODE=off find . -not -path './vendor/*' -type f -name '*.php' -print0 | xargs -0 -n1 -P$(nproc) php -l -n | (! grep -v \"No syntax errors detected\" )",
-        "cs": "XDEBUG_MODE=off vendor/bin/php-cs-fixer fix --dry-run",
-        "csf": "XDEBUG_MODE=off vendor/bin/php-cs-fixer fix",
-        "static": "XDEBUG_MODE=off vendor/bin/phpstan --memory-limit=4G analyse",
+        "cs": "XDEBUG_MODE=off vendor/bin/php-cs-fixer fix --dry-run  --verbose --ansi",
+        "csf": "XDEBUG_MODE=off vendor/bin/php-cs-fixer fix --verbose --ansi",
+        "static": "XDEBUG_MODE=off vendor/bin/phpstan --ansi --no-progress --memory-limit=4G analyse",
         "test": "XDEBUG_MODE=off vendor/bin/phpunit --no-coverage",
         "coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text",
         "coverage-html": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text --coverage-html=coverage",
