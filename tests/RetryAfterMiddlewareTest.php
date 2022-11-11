@@ -249,14 +249,38 @@ class RetryAfterMiddlewareTest extends TestCase
     /**
      * @test
      * @covers \PoorPlebs\GuzzleRetryAfterMiddleware\RetryAfterMiddleware
+     */
+    public function it_passes_when_cache_key_is_missing(): void
+    {
+        $handlerStack = HandlerStack::create(new MockHandler([
+            new Response(200, [], '{"ok":true,"result":{}}'),
+        ]));
+        $handlerStack->unshift(
+            new RetryAfterMiddleware(new Repository(new ArrayStore())),
+            'retry_after',
+        );
+        $client = new Client([
+            'base_uri' => 'https://sometest.com/',
+            'handler' => $handlerStack,
+        ]);
+
+        /** @var \Psr\Http\Message\ResponseInterface $response */
+        $response = $client->postAsync('sendMessage')->wait();
+
+        $this->assertSame('{"ok":true,"result":{}}', (string)$response->getBody());
+    }
+
+    /**
+     * @test
+     * @covers \PoorPlebs\GuzzleRetryAfterMiddleware\RetryAfterMiddleware
      * @covers \PoorPlebs\GuzzleRetryAfterMiddleware\MissingRetryAfterCacheKeyException
      */
-    public function it_throws_an_exception_when_cache_key_is_missing(): void
+    public function it_throws_an_exception_when_cache_key_is_empty_string(): void
     {
         $this->expectException(MissingRetryAfterCacheKeyException::class);
         $this->expectExceptionCode(0);
         $this->expectExceptionMessage(
-            'Required qequest option ' . RetryAfterMiddleware::REQUEST_OPTION . ' has not been provided.'
+            'Request option ' . RetryAfterMiddleware::REQUEST_OPTION . ' must be a non empty string, empty string given.'
         );
 
         $handlerStack = HandlerStack::create(new MockHandler([
@@ -269,6 +293,7 @@ class RetryAfterMiddlewareTest extends TestCase
         $client = new Client([
             'base_uri' => 'https://sometest.com/',
             'handler' => $handlerStack,
+            RetryAfterMiddleware::REQUEST_OPTION => '',
         ]);
 
         $client->postAsync('sendMessage')->wait();
@@ -284,7 +309,7 @@ class RetryAfterMiddlewareTest extends TestCase
         $this->expectException(MissingRetryAfterCacheKeyException::class);
         $this->expectExceptionCode(0);
         $this->expectExceptionMessage(
-            'Request option ' . RetryAfterMiddleware::REQUEST_OPTION . ' must be of type string, integer given.'
+            'Request option ' . RetryAfterMiddleware::REQUEST_OPTION . ' must be a non empty string, integer given.'
         );
 
         $handlerStack = HandlerStack::create(new MockHandler([
