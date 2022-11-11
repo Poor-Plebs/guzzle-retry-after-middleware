@@ -28,19 +28,17 @@ class RetryAfterMiddleware
     public function __invoke(callable $handler): callable
     {
         return function (RequestInterface $request, array $options = []) use ($handler): PromiseInterface {
-            if (!isset($options[self::REQUEST_OPTION])) {
-                throw new MissingRetryAfterCacheKeyException(sprintf(
-                    'Required qequest option %s has not been provided.',
-                    self::REQUEST_OPTION,
-                ), $request);
+            if (!array_key_exists(self::REQUEST_OPTION, $options)) {
+                return $handler($request, $options);
             }
 
             $key = $options[self::REQUEST_OPTION];
-            if (!is_string($key)) {
+            if (!is_string($key) || $key === '') {
+                $type = gettype($key);
                 throw new MissingRetryAfterCacheKeyException(sprintf(
-                    'Request option %s must be of type string, %s given.',
+                    'Request option %s must be a non empty string, %s given.',
                     self::REQUEST_OPTION,
-                    gettype($key),
+                    $type === 'string' ? 'empty string' : $type,
                 ), $request);
             }
 
