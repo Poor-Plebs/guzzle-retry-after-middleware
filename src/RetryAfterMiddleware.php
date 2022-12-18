@@ -21,7 +21,7 @@ class RetryAfterMiddleware
 
     public const REQUEST_OPTION = 'retry_after_cache_key';
 
-    public function __construct(protected CacheInterface $cache)
+    public function __construct(protected readonly CacheInterface $cache)
     {
     }
 
