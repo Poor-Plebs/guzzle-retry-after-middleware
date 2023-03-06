@@ -44,7 +44,7 @@
     "prefer-stable": true,
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.13.0",
-        "illuminate/cache": "^9.38.0",
+        "illuminate/cache": "^9.38.0 || ^10.0.0",
         "phpstan/phpstan": "^1.9.0",
         "phpunit/phpunit": "^9.5.26",
         "roave/security-advisories": "dev-latest"
