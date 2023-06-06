@@ -64,11 +64,7 @@ class RetryAfterMiddleware
                 },
                 function (Throwable $reason) use ($key): PromiseInterface {
                     if ($reason instanceof BadResponseException) {
-                        $response = $reason->getResponse();
-
-                        if ($response instanceof ResponseInterface) {
-                            $this->checkHeader($response, $key);
-                        }
+                        $this->checkHeader($reason->getResponse(), $key);
                     }
 
                     return rejection_for($reason);

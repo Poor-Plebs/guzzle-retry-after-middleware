@@ -328,7 +328,7 @@ class RetryAfterMiddlewareTest extends TestCase
         $client->postAsync('sendMessage')->wait();
     }
 
-    public function retryAfterDateDataProvider(): array
+    public static function retryAfterDateDataProvider(): array
     {
         return [
             'success_trigger' => [
@@ -356,7 +356,7 @@ class RetryAfterMiddlewareTest extends TestCase
         ];
     }
 
-    public function retryAfterSecondsDataProvider(): array
+    public static function retryAfterSecondsDataProvider(): array
     {
         return [
             'success_trigger' => [
