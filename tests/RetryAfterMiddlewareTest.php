@@ -111,7 +111,7 @@ class RetryAfterMiddlewareTest extends TestCase
 
         $cachedRetryAfterObj = new CarbonImmutable($cachedRetryAfter);
 
-        $this->assertSame(self::RETRY_AFTER_SECONDS, $now->diffInSeconds($cachedRetryAfterObj));
+        $this->assertSame(self::RETRY_AFTER_SECONDS, (int)$now->diffInSeconds($cachedRetryAfterObj));
 
         // Second request is stopped at the beginning of retry after period
         try {
@@ -202,7 +202,7 @@ class RetryAfterMiddlewareTest extends TestCase
 
         $cachedRetryAfterObj = new CarbonImmutable($cachedRetryAfter);
 
-        $this->assertSame(self::RETRY_AFTER_SECONDS, $now->diffInSeconds($cachedRetryAfterObj));
+        $this->assertSame(self::RETRY_AFTER_SECONDS, (int)$now->diffInSeconds($cachedRetryAfterObj));
 
         // Second request is stopped at the beginning of retry after period
         try {

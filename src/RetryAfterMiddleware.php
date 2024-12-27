@@ -7,13 +7,12 @@ namespace PoorPlebs\GuzzleRetryAfterMiddleware;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use GuzzleHttp\Exception\BadResponseException;
+use GuzzleHttp\Promise\Create;
 use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
 use Throwable;
-
-use function GuzzleHttp\Promise\rejection_for;
 
 class RetryAfterMiddleware
 {
@@ -49,7 +48,7 @@ class RetryAfterMiddleware
 
                 $now = new CarbonImmutable();
                 if ($retryAfter->greaterThanOrEqualTo($now)) {
-                    return rejection_for(new RetryAfterException(
+                    return Create::rejectionFor(new RetryAfterException(
                         $this->retryAfterMessage($retryAfter, $now),
                         $request,
                     ));
@@ -67,7 +66,7 @@ class RetryAfterMiddleware
                         $this->checkHeader($reason->getResponse(), $key);
                     }
 
-                    return rejection_for($reason);
+                    return Create::rejectionFor($reason);
                 }
             );
         };
