@@ -24,10 +24,15 @@ class RetryAfterMiddleware
     {
     }
 
+    /**
+     * @param (callable(RequestInterface,array<string,mixed>): PromiseInterface) $handler
+     * @return (callable(RequestInterface,array<string,mixed>): PromiseInterface)
+     */
     public function __invoke(callable $handler): callable
     {
         return function (RequestInterface $request, array $options = []) use ($handler): PromiseInterface {
             if (!array_key_exists(self::REQUEST_OPTION, $options)) {
+                /** @phpstan-ignore-next-line */
                 return $handler($request, $options);
             }
 
@@ -55,6 +60,7 @@ class RetryAfterMiddleware
                 }
             }
 
+            /** @phpstan-ignore-next-line */
             return $handler($request, $options)->then(
                 function (ResponseInterface $response) use ($key): mixed {
                     $this->checkHeader($response, $key);
@@ -81,8 +87,12 @@ class RetryAfterMiddleware
         );
     }
 
-    private function checkHeader(ResponseInterface $response, string $key): void
+    private function checkHeader(?ResponseInterface $response, string $key): void
     {
+        if ($response === null) {
+            return;
+        }
+
         $headers = $response->getHeader(self::HEADER);
         $lastValue = end($headers);
 
