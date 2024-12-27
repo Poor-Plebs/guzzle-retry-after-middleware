@@ -78,7 +78,7 @@ return (new Config())
         'concat_space' => [
             'spacing' => 'one',
         ],
-        'compact_nullable_typehint' => true,
+        'compact_nullable_type_declaration' => true,
         'ternary_operator_spaces' => true,
         'unary_operator_spaces' => true,
         'binary_operator_spaces' => [
@@ -139,7 +139,11 @@ return (new Config())
         'short_scalar_cast' => true,
         'no_useless_else' => true,
         'no_useless_return' => true,
-        'function_typehint_space' => true,
+        'type_declaration_spaces' => [
+            'elements' => [
+                'function'
+            ]
+        ],
         'function_declaration' => [
             'closure_function_spacing' => 'one',
         ],

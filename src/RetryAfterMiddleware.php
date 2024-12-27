@@ -101,7 +101,7 @@ class RetryAfterMiddleware
         $this->cache->set(
             $key,
             $retryAfter->toISOString(true),
-            $now->diffInSeconds($retryAfter, true) + 1, // Keep it longer in cache
+            (int)$now->diffInSeconds($retryAfter, true) + 1, // Keep it longer in cache
         );
     }
 }
