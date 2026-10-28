@@ -8,3 +8,5 @@ parameters:
     tmpDir: cache
     inferPrivatePropertyTypeFromConstructor: true
     treatPhpDocTypesAsCertain: false
+    # Guzzle version specific ignores only match against some supported majors.
+    reportUnmatchedIgnoredErrors: false
