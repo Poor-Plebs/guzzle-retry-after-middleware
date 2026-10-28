@@ -16,6 +16,12 @@ The format is based on [Keep a Changelog][1], and this project adheres to
 
 ## [Unreleased]
 
+## [3.2.0] - 2026-10-28
+
+### Added
+
+- Added support for `guzzlehttp/guzzle` 8 and `guzzlehttp/promises` 3.
+
 ## [3.0.1] - 2022-12-18
 
 ### Fixed
@@ -79,7 +85,8 @@ The format is based on [Keep a Changelog][1], and this project adheres to
 [1]: https://keepachangelog.com/en/1.1.0/
 [2]: https://semver.org/spec/v2.0.0.html
 
-[Unreleased]: https://github.com/Poor-Plebs/guzzle-retry-after-middleware/compare/3.0.1...HEAD
+[Unreleased]: https://github.com/Poor-Plebs/guzzle-retry-after-middleware/compare/3.2.0...HEAD
+[3.2.0]: https://github.com/Poor-Plebs/guzzle-retry-after-middleware/releases/3.2.0
 [3.0.1]: https://github.com/Poor-Plebs/guzzle-retry-after-middleware/releases/3.0.1
 [3.0.0]: https://github.com/Poor-Plebs/guzzle-retry-after-middleware/releases/3.0.0
 [2.1.0]: https://github.com/Poor-Plebs/guzzle-retry-after-middleware/releases/2.1.0

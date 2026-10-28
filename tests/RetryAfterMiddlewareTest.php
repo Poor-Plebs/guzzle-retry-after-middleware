@@ -361,7 +361,7 @@ class RetryAfterMiddlewareTest extends TestCase
         return [
             'success_trigger' => [
                 new MockHandler([
-                    new Response(200, ['Retry-After' => self::RETRY_AFTER_SECONDS], '{"ok":true,"result":{}}'),
+                    new Response(200, ['Retry-After' => (string)self::RETRY_AFTER_SECONDS], '{"ok":true,"result":{}}'),
                     new Response(200, [], '{"ok":true,"result":{}}'),
                 ]),
             ],
@@ -373,7 +373,7 @@ class RetryAfterMiddlewareTest extends TestCase
                         new Response(
                             429,
                             [
-                                'Retry-After' => self::RETRY_AFTER_SECONDS,
+                                'Retry-After' => (string)self::RETRY_AFTER_SECONDS,
                             ],
                             '{"ok":false,"error_code":429,"description":"Too Many Requests: retry after ' . self::RETRY_AFTER_SECONDS . '","parameters":{"retry_after":' . self::RETRY_AFTER_SECONDS . '}}',
                         ),

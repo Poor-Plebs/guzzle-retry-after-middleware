@@ -24,9 +24,8 @@ class RetryAfterMiddleware
     {
     }
 
-    /**
-     * @param (callable(RequestInterface,array<string,mixed>): PromiseInterface) $handler
-     * @return (callable(RequestInterface,array<string,mixed>): PromiseInterface)
+    /* Handler signatures stay untyped: Guzzle 8 types its promises with
+     * generics, earlier majors do not, so no PHPDoc fits all of them.
      */
     public function __invoke(callable $handler): callable
     {
@@ -62,11 +61,13 @@ class RetryAfterMiddleware
 
             /** @phpstan-ignore-next-line */
             return $handler($request, $options)->then(
+                // @phpstan-ignore argument.type (Guzzle 8 promises are generic over mixed.)
                 function (ResponseInterface $response) use ($key): mixed {
                     $this->checkHeader($response, $key);
 
                     return $response;
                 },
+                // @phpstan-ignore argument.type (Guzzle 8 promises are generic over mixed.)
                 function (Throwable $reason) use ($key): PromiseInterface {
                     if ($reason instanceof BadResponseException) {
                         $this->checkHeader($reason->getResponse(), $key);
