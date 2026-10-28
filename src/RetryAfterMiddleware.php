@@ -24,9 +24,8 @@ class RetryAfterMiddleware
     {
     }
 
-    /**
-     * @param (callable(RequestInterface,array<string,mixed>): PromiseInterface) $handler
-     * @return (callable(RequestInterface,array<string,mixed>): PromiseInterface)
+    /* Handler signatures stay untyped: Guzzle 8 types its promises with
+     * generics, earlier majors do not, so no PHPDoc fits all of them.
      */
     public function __invoke(callable $handler): callable
     {
